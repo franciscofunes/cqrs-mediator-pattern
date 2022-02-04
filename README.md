@@ -3,7 +3,7 @@
 <h5 align="center"><a target="_blank" href="https://www.youtube.com/watch?v=yozD5Tnd8nw">Tutorial link</a></h5>
 <hr>
 
-- 🌱 I’m currently learning **ASP.NET MVC 4 with EF**
+- 🌱 I’m currently learning **CQRS and Mediator Patterns**
 
 - 👨‍💻 All of my projects are available at [https://franciscofunes.netlify.com/](https://franciscofunes.netlify.com/)
 
