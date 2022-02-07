@@ -15,7 +15,7 @@ namespace DemoLibrary.DataAcces
         public DemoDataAccess()
         {
             people.Add(new PersonModel { Id = 1, FirstName = "Francisco", LastName = "Funes" });
-            people.Add(new PersonModel { Id = 1, FirstName = "Flavia", LastName = "Dacheville" });
+            people.Add(new PersonModel { Id = 2, FirstName = "Flavia", LastName = "Dacheville" });
         }
 
         public List<PersonModel> GetPeople()

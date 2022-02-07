@@ -16,6 +16,7 @@ Welcome to your new app.
 @code {
 	List<PersonModel> people;
 
+	// Our logic it's in the handlers not in the UI
 	protected override async Task OnInitializedAsync()
 	{
 		people = await _mediator.Send(new GetPersonListQuery()); 
