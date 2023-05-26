@@ -8,10 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: pull-request
-        uses: diillson/auto-pull-request@latest
+
+      - name: Set pull request description
+        run: |
+          echo "::set-env name=PR_BODY::$(cat .github/PULL_REQUEST_TEMPLATE.md)"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v3
         with:
-          destination_branch: "develop"
-          pr_template: ".github/PULL_REQUEST_TEMPLATE.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Pull Request Title
+          body: ${{ env.PR_BODY }}
+          branch: develop
+          base: main
 
 
