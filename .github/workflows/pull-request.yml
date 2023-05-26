@@ -20,8 +20,9 @@ jobs:
           echo "::set-output name=template::$(cat .github/PULL_REQUEST_TEMPLATE.md)"
 
       - name: Update pull request description
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const template = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/pr_template.md`, 'utf8');
@@ -34,4 +35,4 @@ jobs:
                 body: template
               });
             }
-          token: ${{ secrets.GITHUB_TOKEN }}
+
