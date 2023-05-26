@@ -1,15 +1,38 @@
 on:
   push:
     branches:
-      - develop
+      - 'feature/*'
 
 jobs:
   pull-request:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set pull request description
+        run: |
+          echo "## Description" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "Please provide a brief description of the changes introduced in this pull request." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "## Checklist" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "- [ ] I have tested these changes locally." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "- [ ] I have reviewed the code and ensured it follows the project's guidelines." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "- [ ] I have updated the documentation, if necessary." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "## Related Issues" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "Closes #${{ github.event.pull_request.number }}" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "## Jira Ticket" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "Jira Ticket: [JIRA-1234](https://your-jira-instance.com/browse/JIRA-1234)" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "## Test Instructions" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "Please follow these steps to test the changes:" >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "1. Step 1..." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "2. Step 2..." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
+          echo "3. Step 3..." >> $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md
       - name: pull-request
         uses: diillson/auto-pull-request@latest
         with:
-          destination_branch: "main"
+          destination_branch: "develop"
+
 
