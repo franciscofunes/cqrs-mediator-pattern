@@ -7,32 +7,24 @@ jobs:
   pull-request:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set pull request description
         run: |
-          echo "${{ steps.read_template.outputs.template }}" >> $GITHUB_WORKSPACE/pr_template.md
+          echo "${{ steps.read_template.outputs.template }}" >> pr_template.md
 
       - name: Read pull request template
         id: read_template
         run: |
           echo "::set-output name=template::$(cat .github/PULL_REQUEST_TEMPLATE.md)"
 
-      - name: Update pull request description
-        uses: actions/github-script@v4
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const template = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/pr_template.md`, 'utf8');
-            const pullRequestNumber = context.payload.pull_request.number;
-            if (pullRequestNumber) {
-              github.pulls.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pullRequestNumber,
-                body: template
-              });
-            }
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Pull Request Title
+          body: ${{ steps.read_template.outputs.template }}
+          branch: develop
+          base: main
+
 
