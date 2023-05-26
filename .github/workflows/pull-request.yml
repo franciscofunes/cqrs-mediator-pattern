@@ -11,15 +11,21 @@ jobs:
 
       - name: Set pull request description
         run: |
-          echo "::set-env name=PR_BODY::$(cat .github/PULL_REQUEST_TEMPLATE.md)"
+          echo "${{ steps.read_template.outputs.template }}" >> pr_template.md
+
+      - name: Read pull request template
+        id: read_template
+        run: |
+          echo "::set-output name=template::$(cat .github/PULL_REQUEST_TEMPLATE.md)"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Pull Request Title
-          body: ${{ env.PR_BODY }}
+          body: ${{ steps.read_template.outputs.template }}
           branch: develop
           base: main
+
 
 
