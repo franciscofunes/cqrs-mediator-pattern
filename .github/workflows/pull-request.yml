@@ -11,21 +11,26 @@ jobs:
 
       - name: Set pull request description
         run: |
-          echo "${{ steps.read_template.outputs.template }}" >> pr_template.md
+          echo "${{ steps.read_template.outputs.template }}" >> $GITHUB_WORKSPACE/pr_template.md
 
       - name: Read pull request template
         id: read_template
         run: |
           echo "::set-output name=template::$(cat .github/PULL_REQUEST_TEMPLATE.md)"
 
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v3
+      - name: Update pull request description
+        uses: actions/github-script@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Pull Request Title
-          body: ${{ steps.read_template.outputs.template }}
-          branch: develop
-          base: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const template = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/pr_template.md`, 'utf8');
+            github.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              body: template
+            });
 
 
 
