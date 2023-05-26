@@ -7,7 +7,8 @@ jobs:
   pull-request:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Set pull request description
         run: |
@@ -21,11 +22,10 @@ jobs:
       - name: Update pull request description
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const template = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/pr_template.md`, 'utf8');
-            const pullRequestNumber = context.payload.pull_request?.number;
+            const pullRequestNumber = context.payload.pull_request.number;
             if (pullRequestNumber) {
               github.pulls.update({
                 owner: context.repo.owner,
@@ -34,3 +34,4 @@ jobs:
                 body: template
               });
             }
+          token: ${{ secrets.GITHUB_TOKEN }}
